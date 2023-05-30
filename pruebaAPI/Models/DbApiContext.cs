@@ -17,9 +17,15 @@ public partial class DbApiContext : DbContext
 
     public virtual DbSet<Categoria> Categoria { get; set; }
 
+    public virtual DbSet<Datos> Datos { get; set; }
+
     public virtual DbSet<Producto> Productos { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { 
+    public virtual DbSet<Usuario> Usuarios { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,6 +37,19 @@ public partial class DbApiContext : DbContext
             entity.ToTable("CATEGORIA");
 
             entity.Property(e => e.IdCategoria).HasColumnName("idCategoria");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("descripcion");
+        });
+
+        modelBuilder.Entity<Datos>(entity =>
+        {
+            entity.HasKey(e => e.IdDatos).HasName("PK__DATOS__B0831DB79C0159B7");
+
+            entity.ToTable("DATOS");
+
+            entity.Property(e => e.IdDatos).HasColumnName("idDatos");
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -64,6 +83,39 @@ public partial class DbApiContext : DbContext
             entity.HasOne(d => d.oCategoria).WithMany(p => p.Productos)
                 .HasForeignKey(d => d.IdCategoria)
                 .HasConstraintName("FK_IDCATEGORIA");
+        });
+
+        modelBuilder.Entity<Usuario>(entity =>
+        {
+            entity.HasKey(e => e.IdUsuario).HasName("PK__USUARIOS__645723A607750755");
+
+            entity.ToTable("USUARIOS");
+
+            entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
+            entity.Property(e => e.Apellido)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("apellido");
+            entity.Property(e => e.Correo)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("correo");
+            entity.Property(e => e.Direccion)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("direccion");
+            entity.Property(e => e.Identificacion)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("identificacion");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("nombre");
+            entity.Property(e => e.Telefono)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("telefono");
         });
 
         OnModelCreatingPartial(modelBuilder);
