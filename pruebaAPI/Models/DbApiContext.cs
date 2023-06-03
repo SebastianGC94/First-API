@@ -17,7 +17,13 @@ public partial class DbApiContext : DbContext
 
     public virtual DbSet<Categoria> Categoria { get; set; }
 
+    public virtual DbSet<Comentario> Comentarios { get; set; }
+
     public virtual DbSet<Datos> Datos { get; set; }
+
+    public virtual DbSet<DetallesOrden> DetallesOrdens { get; set; }
+
+    public virtual DbSet<Orden> Ordens { get; set; }
 
     public virtual DbSet<Producto> Productos { get; set; }
 
@@ -43,6 +49,27 @@ public partial class DbApiContext : DbContext
                 .HasColumnName("descripcion");
         });
 
+        modelBuilder.Entity<Comentario>(entity =>
+        {
+            entity.HasKey(e => e.IdComentario).HasName("PK__Comentar__C74515DADE388DB4");
+
+            entity.Property(e => e.IdComentario)
+                .ValueGeneratedNever()
+                .HasColumnName("idComentario");
+            entity.Property(e => e.Comentarios)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("comentario");
+            entity.Property(e => e.IdProducto).HasColumnName("idProducto");
+            entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
+
+            entity.HasOne(d => d.oProducto).WithMany(p => p.Comentarios)
+                .HasForeignKey(d => d.IdProducto)
+                .HasConstraintName("FK__Comentari__idPro__70DDC3D8");
+
+          
+        });
+
         modelBuilder.Entity<Datos>(entity =>
         {
             entity.HasKey(e => e.IdDatos).HasName("PK__DATOS__B0831DB79C0159B7");
@@ -54,6 +81,55 @@ public partial class DbApiContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("descripcion");
+        });
+
+        modelBuilder.Entity<DetallesOrden>(entity =>
+        {
+            entity.HasKey(e => e.IdDetalle).HasName("PK__Detalles__49CAE2FB158C32FA");
+
+            entity.ToTable("DetallesOrden");
+
+            entity.Property(e => e.IdDetalle)
+                .ValueGeneratedNever()
+                .HasColumnName("idDetalle");
+            entity.Property(e => e.Cantidad).HasColumnName("cantidad");
+            entity.Property(e => e.IdOrden).HasColumnName("idOrden");
+            entity.Property(e => e.IdProducto).HasColumnName("idProducto");
+            entity.Property(e => e.Precio)
+                .HasColumnType("decimal(10, 2)")
+                .HasColumnName("precio");
+
+            entity.HasOne(d => d.oOrden).WithMany(p => p.DetallesOrdens)
+                .HasForeignKey(d => d.IdOrden)
+                .HasConstraintName("FK__DetallesO__idOrd__787EE5A0");
+
+            entity.HasOne(d => d.oProducto).WithMany(p => p.DetallesOrdenes)
+                .HasForeignKey(d => d.IdProducto)
+                .HasConstraintName("FK__DetallesO__idPro__797309D9");
+        });
+
+        modelBuilder.Entity<Orden>(entity =>
+        {
+            entity.HasKey(e => e.IdOrden).HasName("PK__Orden__C8AAF6F3D03893BB");
+
+            entity.ToTable("Orden");
+
+            entity.Property(e => e.IdOrden)
+                .ValueGeneratedNever()
+                .HasColumnName("idOrden");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("descripcion");
+            entity.Property(e => e.Fecha)
+                .HasColumnType("datetime")
+                .HasColumnName("fecha");
+            entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
+
+            entity.HasOne(d => d.oUsuario).WithMany(p => p.Ordens)
+               .HasForeignKey(d => d.IdUsuario)
+               .HasConstraintName("FK_IDUSUARIO");
+
         });
 
         modelBuilder.Entity<Producto>(entity =>

@@ -28,7 +28,7 @@ namespace pruebaAPI.Controllers
             try
             {
                 Lista = _dbcontext.Productos.Include(c => c.oCategoria).ToList();
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = Lista });
+                return StatusCode(StatusCodes.Status200OK, new { mensaje = "Se han listado correctamente los productos", response = Lista });
             }
             catch (Exception ex)
             {
@@ -53,7 +53,7 @@ namespace pruebaAPI.Controllers
             {
                 oProducto = _dbcontext.Productos.Include(c => c.oCategoria).Where(p => p.IdProducto == idProducto).FirstOrDefault();
 
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = oProducto });
+                return StatusCode(StatusCodes.Status200OK, new { mensaje = "Producto encontrado", response = oProducto });
             }
             catch (Exception ex)
             {
@@ -72,7 +72,7 @@ namespace pruebaAPI.Controllers
                 _dbcontext.Productos.Add(objeto);
                 _dbcontext.SaveChanges();
 
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok" });
+                return StatusCode(StatusCodes.Status200OK, new { mensaje = "El producto se guardó con exito" });
             }
             catch (Exception ex)
             {
@@ -105,7 +105,7 @@ namespace pruebaAPI.Controllers
                 _dbcontext.Productos.Update(oProducto);
                 _dbcontext.SaveChanges();
 
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok" });
+                return StatusCode(StatusCodes.Status200OK, new { mensaje = "Se actualizó la información" });
             }
             catch (Exception ex)
             {
@@ -132,7 +132,7 @@ namespace pruebaAPI.Controllers
                 _dbcontext.Productos.Remove(oProducto);
                 _dbcontext.SaveChanges();
 
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok" });
+                return StatusCode(StatusCodes.Status200OK, new { mensaje = "Se eliminó el producto" });
             }
             catch (Exception ex)
             {

@@ -17,5 +17,9 @@ public partial class Producto
 
     public decimal? Precio { get; set; }
 
+    public virtual ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
+
+    public virtual ICollection<DetallesOrden> DetallesOrdenes { get; set; } = new List<DetallesOrden>();
+
     public virtual Categoria? oCategoria { get; set; }
 }
